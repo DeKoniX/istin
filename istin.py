@@ -1,5 +1,6 @@
 #!/bin/python
 # -*- coding: utf-8 -*-
+# DeKoniX =^_^= 2013
 
 #str = "(1->2)&(3<->1)"
 #stro = "1&2~3||-4"
@@ -7,17 +8,55 @@
 #stro = "(A|C&-B)&(A|C)"
 #stro = "A|C&-B"
 m = []
-znak = ('&', '|')
-stro = "A&B|C"
+znak = ('&', '|', '-')
+stro = "A&B|-C"
 
 class istin:
     def __init__(self, stro):
         #stroki = pow(2, len(self.simbol(stro)))
         m = self.massstrok(stro)
-        for s in stro:
-            if s == "-":
-                stro,  = otric()
+        otv = []
+        i_mass = 0
+        for i in range(0, len(stro)):
+            try:
+                if stro[i] == "-":
+                    # ToDo: передовать не следующий символ, а смотреть сколько символов, для чисел больше 9
+                    self.otric(stro[i+1], m, otv, i_mass)
+                    stro = stro.replace(stro[i+1], str(i_mass))
+                    stro = stro.replace(stro[i], '')
+                    print stro
+                    i_mass += 1
+            except IndexError:
+                pass
 
+    def otric(self, vir, m, otv, i_mass):
+        # Принимаю выражение, массив с начальными значениями, массив ответов, в какую ячейку записывать
+        # Составлять новый массив и назначить ему номер, вернуть строку с заменой символов на номер, или просто вернуть носер, замену сделать там
+        print 'Выражение: '+vir
+        if type(vir) == int:
+            # ToDo: если выражение число, то искать в другом массиве и менять его
+            print 'fix_me'
+        else:
+            for s in m:
+                print s
+                if s[0] == vir:
+                    otv.append([])
+                    for i in s:
+                        if i == 0:
+                            otv[i_mass].append(1)
+                        elif i == 1:
+                            otv[i_mass].append(0)
+
+        print m
+        print otv
+            #for s in range(0, len(m)):
+                #print m[s][0]
+                #if m[s][0] == vir:
+                    #for i in range(1, len(m[s])):
+                        #if m[s][i] == 0:
+                            #m[s][i] = 1
+                        #elif m[s][i] == 1:
+                            #m[s][i] = 0
 
     def simbol(self, stro):
         for i in stro:
