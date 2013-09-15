@@ -18,27 +18,64 @@ class istin:
         otv = []
         i_mass = 0
         for i in range(0, len(stro)):
-            try:
-                if stro[i] == "-":
-                    # ToDo: передовать не следующий символ, а смотреть сколько символов, для чисел больше 9
-                    self.otric(stro[i+1], m, otv, i_mass)
-                    stro = stro.replace(stro[i+1], str(i_mass))
-                    stro = stro.replace(stro[i], '')
-                    print stro
-                    i_mass += 1
-            except IndexError:
-                pass
+            #try:
+            if stro[i] == "-":
+                # ToDo: передовать не следующий символ, а смотреть сколько символов, для чисел больше 9
+                otv = self.otric(stro[i+1], m, otv, i_mass)
+                stro = stro.replace(stro[i+1], str(i_mass))
+                stro = stro.replace(stro[i], '')
+                print 'ONE: '+stro
+                i_mass += 1
+                break
+            #except IndexError:
+                #pass
+        for i in range(0, len(stro)):
+            #try:
+            if stro[i] == "&":
+                # ToDo: передовать не следующий символ, а смотреть сколько символов, для чисел больше 9
+                otv = self.conjunction(stro[i-1], stro[i+1], m, otv, i_mass)
+                stro = stro.replace(stro[i-1:i+2], str(i_mass))
+                print stro
+                i_mass += 1
+                break
+            #except IndexError:
+                #pass
+        print otv
+
+
+    def conjunction(self, a, b, m, otv, i_mass):
+        print a
+        print b
+        if type(a) == int:
+            mass1 = otv[a]
+        else:
+            for s in m:
+                if s[0] == a:
+                    mass1 = s
+        if type(b) == int:
+            mass2 = otv[b]
+        else:
+            for s in m:
+                if s[0] == b:
+                    mass2 = s
+        print mass1
+        print mass2
+        otv.append([])
+        print range(1, len(mass1))
+        for i in range(1, len(mass1)):
+            otv[i_mass].append(int(int(mass1[i]) & int(mass2[i])))
+        return otv
 
     def otric(self, vir, m, otv, i_mass):
         # Принимаю выражение, массив с начальными значениями, массив ответов, в какую ячейку записывать
         # Составлять новый массив и назначить ему номер, вернуть строку с заменой символов на номер, или просто вернуть носер, замену сделать там
-        print 'Выражение: '+vir
+        #print 'Выражение: '+vir
         if type(vir) == int:
             # ToDo: если выражение число, то искать в другом массиве и менять его
             print 'fix_me'
         else:
             for s in m:
-                print s
+                #print s
                 if s[0] == vir:
                     otv.append([])
                     for i in s:
@@ -47,8 +84,9 @@ class istin:
                         elif i == 1:
                             otv[i_mass].append(0)
 
-        print m
-        print otv
+        #print m
+        #print otv
+        return otv
             #for s in range(0, len(m)):
                 #print m[s][0]
                 #if m[s][0] == vir:
