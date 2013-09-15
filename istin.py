@@ -12,6 +12,7 @@ class istin:
         i_mass = 0
         otv = []
         m = self.massstrok(stro)
+        print m
         self.go(stro, i_mass, otv, m)
 
     def go(self, stro, i_mass, otv, m):
@@ -129,8 +130,8 @@ class istin:
             mass2 = mass2[1:]
         otv.append([])
         for i in range(0, len(mass1)):
-            otv[i_mass].append(int(int(mass1[i]) > int(mass2[i])))
-            print str(mass1[i])+">"+str(mass2[i])+" = "+str(int(int(mass1[i]) > int(mass2[i])))
+            otv[i_mass].append(int(not(int(mass1[i]))) | int(mass2[i]))
+            print str(mass1[i])+">"+str(mass2[i])+" = "+str(int(not(int(mass1[i]))) | int(mass2[i]))
         return otv
 
 
