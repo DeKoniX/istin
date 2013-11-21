@@ -13,7 +13,9 @@ class istin:
         otv = []
         m = self.massstrok(stro)
         print m
-        self.go(stro, i_mass, otv, m)
+        self.otv, asd = self.go(stro, i_mass, otv, m)
+        if self.otv == []:
+            self.otv = m
 
     def go(self, stro, i_mass, otv, m):
         while stro.find('(') != -1:
@@ -260,4 +262,3 @@ class istin:
                         tt=0
             j+=1
         return mass
-istin(stro)
