@@ -4,7 +4,7 @@
 
 m = []
 znak = ('&', '|', '-', '>', '~', '(', ')')
-stro = "(-(A&B)|(C&B&A>-(A&-C~B&C)))"
+stro = "(-(A&B)|(C&B&A>-(A&-C~B&C))&(-A))"
 
 class istin:
     def __init__(self, stro):
@@ -34,9 +34,9 @@ class istin:
         i = 0
         while i<len(stro):
             if stro[i] == "-":
-                # ToDo: передовать не следующий символ, а смотреть сколько символов, для чисел больше 9
-                otv = self.otric(stro[i+1], m, otv, i_mass)
-                stro = stro.replace(stro[i+1], str(i_mass), 1)
+                d, p = self.chislo(stro, i, True)
+                otv = self.otric(stro[i+1:i+p+1], m, otv, i_mass)
+                stro = stro.replace(stro[i+1:i+p+1], str(i_mass), 1)
                 stro = stro.replace(stro[i], '', 1)
                 i_mass += 1
                 i -= 1
@@ -46,9 +46,9 @@ class istin:
         i = 0
         while i<len(stro):
             if stro[i] == "&":
-                # ToDo: передовать не следующий символ, а смотреть сколько символов, для чисел больше 9
-                otv = self.conjunction(stro[i-1], stro[i+1], m, otv, i_mass)
-                stro = stro.replace(stro[i-1:i+2], str(i_mass), 1)
+                d, p = self.chislo(stro, i, False)
+                otv = self.conjunction(stro[i-d:i], stro[i+1:i+p+1], m, otv, i_mass)
+                stro = stro.replace(stro[i-d:i+p+1], str(i_mass), 1)
                 i_mass += 1
                 i -= 2
             i += 1
@@ -57,9 +57,9 @@ class istin:
         i = 0
         while i<len(stro):
             if stro[i] == "|":
-                # ToDo: передовать не следующий символ, а смотреть сколько символов, для чисел больше 9
-                otv = self.disjunction(stro[i-1], stro[i+1], m, otv, i_mass)
-                stro = stro.replace(stro[i-1:i+2], str(i_mass))
+                d, p = self.chislo(stro, i, False)
+                otv = self.disjunction(stro[i-d:i], stro[i+1:i+p+1], m, otv, i_mass)
+                stro = stro.replace(stro[i-d:i+p+1], str(i_mass))
                 i_mass += 1
                 i -= 2
             i += 1
@@ -68,9 +68,9 @@ class istin:
         i = 0
         while i<len(stro):
             if stro[i] == ">":
-                # ToDo: передовать не следующий символ, а смотреть сколько символов, для чисел больше 9
-                otv = self.implication(stro[i-1], stro[i+1], m, otv, i_mass)
-                stro = stro.replace(stro[i-1:i+2], str(i_mass))
+                d, p = self.chislo(stro, i, False)
+                otv = self.implication(stro[i-d:i], stro[i+1:i+p+1], m, otv, i_mass)
+                stro = stro.replace(stro[i-d:i+p+1], str(i_mass))
                 i_mass += 1
                 i -= 2
             i += 1
@@ -79,13 +79,42 @@ class istin:
         i = 0
         while i<len(stro):
             if stro[i] == "~":
-                # ToDo: передовать не следующий символ, а смотреть сколько символов, для чисел больше 9
-                otv = self.equality(stro[i-1], stro[i+1], m, otv, i_mass)
-                stro = stro.replace(stro[i-1:i+2], str(i_mass))
+                d, p = self.chislo(stro, i, False)
+                otv = self.equality(stro[i-d:i], stro[i+1:i+p+1], m, otv, i_mass)
+                stro = stro.replace(stro[i-d:i+p+1], str(i_mass))
                 i_mass += 1
                 i -= 2
             i += 1
         return otv, i_mass
+
+    def chislo(self, stro, i, otric):
+        print stro
+        p = 0
+        d = 0
+        buf = i
+        i += 1
+        while i<len(stro):
+            p += 1
+            for z in znak:
+                if z == stro[i]:
+                    i = len(stro)
+                    p -= 1
+                    break
+            i += 1
+
+        if otric == False:
+            i = buf
+            i -= 1
+            while i>=0:
+                d += 1
+                for z in znak:
+                    if z == stro[i]:
+                        i = 0
+                        d -= 1
+                        break
+                i -= 1
+
+        return d, p
 
     def equality(self, a, b, m, otv, i_mass):
         print a+"~"+b
@@ -231,4 +260,4 @@ class istin:
                         tt=0
             j+=1
         return mass
-#istin(stro)
+istin(stro)
