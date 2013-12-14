@@ -1,24 +1,41 @@
 #!/bin/python
 # -*- coding: utf-8 -*-
 # DeKoniX =^_^= 2013
+import istin
 
 class ravn:
-    def __init__(self, a, b):
+    def __init__(self):
         import istin
+        self.form = ""
 
-        ai = istin.istin(a)
-        bi = istin.istin(b)
-
-        ai = ai.otv[-1]
-        bi = bi.otv[-1]
-
-        print "#####"
-        print a, " = ", ai
-        print b, " = ", bi
-        if ai == bi:
-            print "Формулы: ", a, " и ", b, " равносильны"
+    def __call__(self, a):
+        print "Добавлена функция: ", a
+        if self.form == "":
+            self.form += "("+a+")"
         else:
-            print "Формулы: ", a, " и ", b, " не равносильны"
+            self.form += "~("+a+")"
 
-#ravn("A&B", "B&A")
-ravn("(A&(B|C))","((A&B)|(A&C))")
+    def go(self):
+        bol = True
+        gg = ""
+        gg = istin.istin(self.form)
+        gg = gg.otv[-1]
+        print "####"
+        print ">", self.form, "<"
+
+        for i in range(len(gg)):
+            if gg[i] != 1:
+                bol = False
+
+        if bol:
+            print self.form, " равносильна"
+        else:
+            print self.form, " не равносильна"
+
+
+#r = ravn()
+
+#r("A")
+#r("A|(B&-B)")
+
+#r.go()

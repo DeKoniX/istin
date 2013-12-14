@@ -12,6 +12,7 @@ class istin:
         i_mass = 0
         otv = []
         m = self.massstrok(stro)
+        self.massstr = self.massstrok(stro)
         print m
         self.otv, asd = self.go(stro, i_mass, otv, m)
         if self.otv == []:
@@ -43,7 +44,6 @@ class istin:
                 i_mass += 1
                 i -= 1
             i += 1
-        print otv
         # Конъюнкция
         i = 0
         while i<len(stro):
@@ -54,7 +54,6 @@ class istin:
                 i_mass += 1
                 i -= 2
             i += 1
-        print otv
         # Дизъюнкция
         i = 0
         while i<len(stro):
@@ -65,7 +64,6 @@ class istin:
                 i_mass += 1
                 i -= 2
             i += 1
-        print otv
         # Импликация
         i = 0
         while i<len(stro):
@@ -76,7 +74,6 @@ class istin:
                 i_mass += 1
                 i -= 2
             i += 1
-        print otv
         # Эквиваленция
         i = 0
         while i<len(stro):
@@ -90,7 +87,6 @@ class istin:
         return otv, i_mass
 
     def chislo(self, stro, i, otric):
-        print stro
         p = 0
         d = 0
         buf = i
@@ -206,8 +202,6 @@ class istin:
                 if s[0] == b:
                     mass2 = s
             mass2 = mass2[1:]
-        print mass1
-        print mass2
         otv.append([])
         for i in range(0, len(mass1)):
             otv[i_mass].append(int(int(mass1[i]) & int(mass2[i])))
@@ -262,3 +256,4 @@ class istin:
                         tt=0
             j+=1
         return mass
+#istin(stro)
